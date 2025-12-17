@@ -168,7 +168,14 @@ class GraphPrefixDecoderRegressor(nn.Module):
         if self.base_model is None:
             raise RuntimeError("Base model not initialized.")
         model_config = self.base_model.config
-        return getattr(model_config, "hidden_size", model_config.n_embd)
+        # Try common attribute names for hidden dimension
+        for attr in ("hidden_size", "n_embd", "d_model"):
+            if hasattr(model_config, attr):
+                return getattr(model_config, attr)
+        raise AttributeError(
+            f"Cannot determine hidden dimension from model config. "
+            f"Expected 'hidden_size', 'n_embd', or 'd_model' attribute."
+        )
 
     def _initialize_components(self) -> None:
         """Initialize prefix projector and regression head based on LLM config."""

@@ -263,10 +263,11 @@ def compute_regression_metrics(eval_pred: Tuple[np.ndarray, np.ndarray]) -> Dict
     rmse = np.sqrt(mse)
     mae = np.mean(np.abs(predictions - labels))
 
-    # R-squared
+    # R-squared with epsilon to avoid division by zero/near-zero
     ss_res = np.sum((labels - predictions) ** 2)
     ss_tot = np.sum((labels - np.mean(labels)) ** 2)
-    r2 = 1 - (ss_res / ss_tot) if ss_tot > 0 else 0.0
+    eps = 1e-10
+    r2 = 1 - (ss_res / (ss_tot + eps)) if ss_tot > eps else 0.0
 
     return {
         "mse": float(mse),
@@ -306,8 +307,9 @@ def create_training_args(
         weight_decay: Weight decay.
         warmup_ratio: Warmup ratio.
         logging_steps: Logging frequency.
-        eval_strategy: Evaluation strategy.
-        save_strategy: Save strategy.
+        eval_strategy: Evaluation strategy ('no', 'steps', 'epoch').
+            Maps to TrainingArguments.evaluation_strategy.
+        save_strategy: Save strategy ('no', 'steps', 'epoch').
         fp16: Use FP16 mixed precision.
         bf16: Use BF16 mixed precision.
         dataloader_num_workers: Dataloader workers.
