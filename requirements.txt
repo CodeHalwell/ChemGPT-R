@@ -1,0 +1,6 @@
+# Core dependencies for graph feature extraction
+networkx>=3.2.1
+numpy>=1.26.0
+
+# RDKit is required for SMILES parsing and descriptor calculation.
+# Install via `conda install -c conda-forge rdkit` or your system package manager.
