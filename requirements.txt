@@ -4,3 +4,14 @@ numpy>=1.26.0
 
 # RDKit is required for SMILES parsing and descriptor calculation.
 # Install via `conda install -c conda-forge rdkit` or your system package manager.
+
+# Deep learning dependencies for model training
+torch>=2.6.0
+transformers>=4.48.0
+peft>=0.7.0
+accelerate>=0.25.0
+bitsandbytes>=0.41.0
+datasets>=2.16.0
+
+# Optional: For evaluation and metrics
+scikit-learn>=1.3.0
